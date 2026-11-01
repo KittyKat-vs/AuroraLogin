@@ -1,3 +1,5 @@
+[Português](configuracao.md) · [English](configuracao.en.md) · [Русский](configuracao.ru.md)
+
 # Configuração
 
 O `config.yml` fica em `plugins/AuroraLogin/`. Toda opção já vem com uma explicação no próprio arquivo, então dá para entender o que cada campo faz sem precisar abrir documentação.

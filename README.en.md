@@ -170,7 +170,7 @@ Requirements: Paper 1.20.1 or newer and Java 17 or newer. Nothing beyond that, b
 
 `config.yml` ships with one explanation per option, and the panel preserves that: since each click rewrites only the value line, the comments stay exactly where they are. A server that already had an old configuration is updated on its own at first boot, reusing your values and keeping the previous file as `config.yml.bak`.
 
-The full list, with every option explained and a sample file, is in [docs/configuracao.md](docs/configuracao.md) (Portuguese for now). The messages live in `plugins/AuroraLogin/lang/`, one file per language (`pt_br.yml`, `en.yml`, `ru.yml`).
+The full list, with every option explained and a sample file, is in [docs/configuracao.en.md](docs/configuracao.en.md) — and in [Portuguese](docs/configuracao.md) or [Russian](docs/configuracao.ru.md) if you prefer. The messages live in `plugins/AuroraLogin/lang/`, one file per language (`pt_br.yml`, `en.yml`, `ru.yml`).
 
 ## About your server's data
 

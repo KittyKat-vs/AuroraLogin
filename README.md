@@ -170,7 +170,7 @@ Pré-requisitos: Paper 1.20.1 ou mais novo e Java 17 ou mais novo. Nada além di
 
 O `config.yml` vem com uma explicação por opção, e o painel preserva isso: como cada clique reescreve apenas a linha do valor, os comentários continuam lá. Servidor que já tinha configuração antiga é atualizado sozinho na primeira inicialização, reaproveitando seus valores e guardando o arquivo anterior como `config.yml.bak`.
 
-A lista completa, com cada opção explicada e o arquivo de exemplo, está em [docs/configuracao.md](docs/configuracao.md). As mensagens ficam em `plugins/AuroraLogin/lang/`, um arquivo por idioma (`pt_br.yml`, `en.yml`, `ru.yml`).
+A lista completa, com cada opção explicada e o arquivo de exemplo, está em [docs/configuracao.md](docs/configuracao.md) — também em [inglês](docs/configuracao.en.md) e [russo](docs/configuracao.ru.md). As mensagens ficam em `plugins/AuroraLogin/lang/`, um arquivo por idioma (`pt_br.yml`, `en.yml`, `ru.yml`).
 
 ## Sobre os dados do seu servidor
 
