@@ -189,7 +189,7 @@ The paid-account check on an offline server rides the server's own network pipel
 
 ## Changelog
 
-**1.10.1** — `config.yml` comments rewritten to explain what each option actually does, including what changes if you turn it off. Configuration documentation split out of the README.
+**1.10.1** — ???
 
 **1.10.0** — Configuration reorganised into sections, with a header and one explanation per option, surviving any write made by the panel or the commands. Automatic migration of old configurations, with a backup in `config.yml.bak`. The Mojang session server address left the file: the check always queries the official server and there is no way to redirect it.
 
