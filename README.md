@@ -189,7 +189,7 @@ A verificação de conta original em servidor offline acompanha o pipeline de re
 
 ## Changelog
 
-**1.10.1** — Comentários do `config.yml` reescritos para explicar o que cada opção faz na prática, inclusive o que muda se você desligar. Documentação de configuração separada do README.
+**1.10.1** — ???
 
 **1.10.0** — Configuração reorganizada em seções, com cabeçalho e uma explicação por opção, que sobrevive a qualquer gravação feita pelo painel ou pelos comandos. Migração automática de configuração antiga, com backup em `config.yml.bak`. O endereço do servidor de sessões da Mojang saiu do arquivo: a checagem sempre consulta o servidor oficial e não há como redirecionar.
 
