@@ -10,187 +10,186 @@
 
 ## Файл целиком
 
-Одно замечание: блок ниже — это ровно тот файл, который плагин кладёт в папку, вместе с комментариями. Они остаются на португальском для всех языков, потому что шаблон конфига в jar один. Всё, что идёт после блока, — уже по-русски.
+Ниже — тот же файл, но с переведёнными комментариями, чтобы читать было удобно, не переключая окна. Одно предупреждение: файл, который плагин реально создаёт в `plugins/AuroraLogin/`, оставляет эти комментарии на португальском, потому что шаблон внутри jar один, — так что отсюда копируют значения, а не блок целиком.
 
 ```yaml
 # ============================================================
-#  AuroraLogin - arquivo de configuracao
+#  AuroraLogin - файл настройки
 # ============================================================
 #
-#  Tudo que o plugin faz no seu servidor esta aqui. Da para
-#  editar na mao ou abrir o painel no jogo com /auroraauth panel
-#  e ir clicando nas opcoes.
+#  Всё, что плагин делает на вашем сервере, собрано здесь.
+#  Можно править руками или открыть игровое меню командой
+#  /auroraauth panel и просто нажимать на опции.
 #
-#  Editou este arquivo? Rode /auroraauth reload. Nao precisa
-#  reiniciar o servidor.
+#  Поправили этот файл? Выполните /auroraauth reload — сервер
+#  перезапускать не нужно.
 #
-#  Quando o painel muda uma opcao, o plugin reescreve apenas a
-#  linha daquele valor. Entao os comentarios e a ordem das secoes
-#  continuam aqui depois.
+#  Когда меню меняет опцию, плагин переписывает только строку
+#  этого значения. Поэтому комментарии и порядок разделов после
+#  этого остаются на месте.
 #
-#  Os comentarios estao sem acento de proposito: assim o arquivo
-#  abre certo em qualquer editor, inclusive os que salvam em
-#  ANSI. O texto das mensagens do jogo, esses sim acentuados,
-#  fica nos arquivos da pasta lang/.
+#  На сервере эти комментарии выводятся на португальском и без
+#  диакритики: шаблон внутри jar один, и так файл корректно
+#  открывается в любом редакторе, включая сохраняющие в ANSI.
+#  А текст, который видит игрок, как раз с ударениями, — он в
+#  файлах папки lang/.
 #
-#  Site, suporte e explicacao detalhada de cada opcao:
+#  Сайт, поддержка и подробное объяснение каждой опции:
 #  https://auroraplugins.duckdns.org
 # ============================================================
 
-# Versao deste formato. Serve para o plugin perceber, depois de
-# uma atualizacao, que o arquivo antigo precisa ganhar os
-# comentarios novos. Deixe como esta.
+# Версия этого формата. Нужна, чтобы после обновления плагин
+# понял, что старому файлу пора получить новые комментарии.
+# Оставьте как есть.
 config-version: 1
 
 # ------------------------------------------------------------
-#  Login e conta
+#  Вход и аккаунт
 # ------------------------------------------------------------
 settings:
-  # Idioma do servidor inteiro: mensagens, painel e ate os nomes
-  # dos comandos de login. Ao trocar para en, /registrar vira
-  # /register e /entrar vira /login. Opcoes: pt_br, en, ru.
+  # Язык всего сервера: сообщения, меню и даже названия команд
+  # входа. При переходе на en /registrar становится /register,
+  # а /entrar — /login. Варианты: pt_br, en, ru.
   default-language: pt_br
 
-  # Conta original do Minecraft entra sozinha, sem registrar e
-  # sem digitar senha. Desligue se quiser senha para todo mundo,
-  # inclusive para quem tem conta paga.
+  # Лицензионный аккаунт Minecraft заходит сам — без регистрации
+  # и без пароля. Выключите, если хотите пароль для всех, включая
+  # тех, кто игру купил.
   premium-auto-login: true
 
-  # Com isso ligado o plugin confere a conta na Mojang durante o
-  # login, e e isso que faz a entrada automatica funcionar em
-  # servidor com online-mode=false. Normal nem precisar mexer:
-  # com proxy fazendo a checagem, ele se desliga sozinho.
+  # С включённым плагин проверяет аккаунт у Mojang прямо во
+  # время входа — именно это делает авто-вход рабочим на сервере
+  # с online-mode=false. Обычно сюда не заглядывают: если
+  # проверку делает прокси, она выключается сама.
   premium-verification: true
 
-  # So tem efeito com o Floodgate instalado. Com ele, o jogador
-  # de celular, console e Windows entra sem senha. Sem Floodgate,
-  # esta opcao fica paradinha e o bedrock registra com senha.
+  # Действует только с установленным Floodgate. С ним игрок с
+  # телефона, консоли и Windows заходит без пароля. Без Floodgate
+  # опция просто стоит на месте, и bedrock регистрируется с
+  # паролем, как все.
   floodgate-auto-login: true
 
-  # Sessao por IP: quem ja logou volta pelo mesmo IP e entra
-  # direto, sem senha de novo. Otimo para o jogador, ruim se o
-  # seu servidor roda em lan house, onde todo mundo divide o
-  # mesmo IP.
+  # Сессия по IP: кто уже входил по этому IP, заходит сразу, без
+  # повторного пароля. Игроку это удобно, а вот на сервере в
+  # компьютерном клубе — плохо, там у всех один IP.
   session-enabled: true
 
-  # Quanto tempo a sessao vale, em minutos. Passou, pede a senha
-  # de novo.
+  # Сколько живёт сессия, в минутах. Прошло — пароль спросят
+  # заново.
   session-minutes: 30
 
-  # Tempo, em segundos, que o jogador tem para se autenticar
-  # depois de entrar. Estourou, ele e desconectado.
+  # Время в секундах, за которое игрок должен авторизоваться
+  # после захода. Не успел — его отключает.
   timeout-seconds: 60
 
-  # Tamanho da senha, valendo para o registro e para a troca.
+  # Размер пароля — действует и при регистрации, и при смене.
   password-min-length: 6
   password-max-length: 64
 
-  # Nao deixa usar o proprio nome como senha, que e o primeiro
-  # chute de quem tenta entrar na conta alheia.
+  # Не разрешает ставить паролем собственный ник — это первое,
+  # что пробует тот, кто лезет в чужой аккаунт.
   password-deny-name: true
 
-  # Na troca de senha, nao deixa voltar para a senha que estava
-  # la antes.
+  # При смене пароля не разрешает вернуться к прежнему.
   password-reuse: true
 
-  # O jogador andou antes de logar? Ele volta para o ponto onde
-  # entrou. Desligue se preferir deixar ele parado onde esta.
+  # Игрок пошёл ходить до входа? Его возвращает на точку захода.
+  # Выключите, если предпочитаете оставить его там, где он стоит.
   teleport-on-move: true
 
-  # Antes de autenticar, o jogador nao abre inventario, nao
-  # quebra nem coloca bloco, nao usa item nem entidade. E a
-  # protecao para quem entra numa conta alheia e ja sair levando
-  # o baul.
+  # До авторизации игрок не открывает инвентарь, не ломает и не
+  # ставит блоки, не использует предметы и сущности. Это защита
+  # от того, кто зайдёт в чужой аккаунт и сразу унесёт сундук.
   block-interactions: true
 
-  # Efeitos em quem ainda nao se autenticou, para a pessoa
-  # perceber que esta esperando login e nao achar que o servidor
-  # travou. Cada um liga e desliga sozinho.
+  # Эффекты на тех, кто ещё не авторизован, — чтобы человек
+  # понял, что ждёт входа, а не что сервер завис. Каждый
+  # включается и выключается отдельно.
   pre-login-effects:
-    # Chave geral: desligando isto, nenhum efeito e aplicado.
+    # Общая кнопка: выключить её — и ни один эффект не наложится.
     enabled: true
-    # Cega o jogador.
+    # Ослепляет игрока.
     blindness: true
-    # Deixa ele andando devagar.
+    # Замедляет ходьбу.
     slowness: true
-    # Nivel da lentidao, de 1 a 5.
+    # Уровень замедления, от 1 до 5.
     slowness-level: 2
-    # Demora mais para quebrar bloco.
+    # Блоки ломаются дольше.
     mining-fatigue: true
-    # Nivel da fadiga de mineracao, de 1 a 5.
+    # Уровень усталости шахты, от 1 до 5.
     mining-fatigue-level: 1
 
 # ------------------------------------------------------------
-#  Seguranca
+#  Безопасность
 # ------------------------------------------------------------
 security:
-  # Protecao contra quem fica chutando senha uma por uma. O
-  # bloqueio e por IP e cresce a cada vez que o limite estoura:
-  # primeira vez leva um kick curto, segunda um kick mais longo,
-  # terceira banimento de IP.
+  # Защита от тех, кто перебирает пароли по одному. Блокировка
+  # идёт по IP и усиливается с каждым превышением: первый раз —
+  # короткий кик, второй — подлиннее, третий — бан IP.
   brute-force:
-    # Chave geral da protecao.
+    # Общая кнопка защиты.
     enabled: true
-    # Quantas senhas erradas o IP pode mandar, dentro da janela
-    # abaixo, antes de levar o primeiro strike.
+    # Сколько неверных паролей может прислать IP внутри окна
+    # ниже, прежде чем получит первый страйк.
     max-attempts: 5
-    # Janela de contagem, em minutos.
+    # Окно подсчёта, в минутах.
     window-minutes: 5
-    # Tempo do kick no primeiro excesso, em minutos.
+    # Длина кика при первом превышении, в минутах.
     block-minutes: 5
-    # Tempo do kick no segundo excesso, em minutos.
+    # Длина кика при втором превышении, в минутах.
     second-kick-minutes: 15
-    # Duracao do ban de IP no terceiro excesso, em horas. O ban
-    # cai sozinho nesse prazo, sem ninguem precisar desbanir.
+    # Длительность бана IP при третьем превышении, в часах. Бан
+    # снимается сам по истечении срока — разбанивать никто не
+    # должен.
     ban-hours: 24
-    # Passando deste tempo sem nenhum excesso, os strikes do IP
-    # voltam a zero. Em horas (168 = uma semana).
+    # Прошло столько времени без превышений — страйки IP
+    # обнуляются. В часах (168 = неделя).
     strike-reset-hours: 168
-    # Desligado, a terceira vez vira apenas mais um kick com o
-    # segundo tempo, em vez de banir o IP.
+    # Если выключить, третий раз превращается в очередной кик со
+    # вторым временем вместо бана IP.
     ip-ban: true
-    # Link do convite do Discord, mostrado na tela de banimento
-    # para o jogador poder recorrer. Deixe vazio ('') para nao
-    # mostrar botao nenhum.
+    # Ссылка-приглашение в Discord, её показывают на экране бана,
+    # чтобы игроку было куда пойти. Оставьте пустой (''), чтобы
+    # не показывать кнопку вовсе.
     discord-invite: ''
 
 # ------------------------------------------------------------
-#  Interface
+#  Интерфейс
 # ------------------------------------------------------------
 visual:
-  # Titulo na tela quando o jogador entra e quando autentica.
+  # Титр на экране при заходе и при авторизации.
   titles: true
-  # Som nas acoes de registro, login e troca de senha.
+  # Звуки на регистрацию, вход и смену пароля.
   sounds: true
-  # Barra de acao com o tempo que falta para autenticar.
+  # Экшн-бар с оставшимся временем на авторизацию.
   action-bar: true
-  # De quanto em quanto tempo a barra e atualizada, em ticks
-  # (20 ticks = 1 segundo). 40 significa a cada 2 segundos.
+  # Как часто обновляется эта строка, в тиках (20 тиков = 1
+  # секунда). 40 — значит каждые 2 секунды.
   action-bar-interval-ticks: 40
 
 # ------------------------------------------------------------
-#  Painel
+#  Меню
 # ------------------------------------------------------------
 panel:
-  # Som de clique ao navegar pelo /auroraauth panel.
+  # Щелчок при навигации по /auroraauth panel.
   sounds: true
 
 # ------------------------------------------------------------
-#  Administracao
+#  Администрирование
 # ------------------------------------------------------------
 admin:
-  # Grava em audit.log o que a administracao fez: quem redefiniu
-  # senha, removeu conta, desconectou ou desbanou um IP. Senha
-  # nunca aparece ali.
+  # Пишет в audit.log, что делала администрация: кто сбросил
+  # пароль, удалил аккаунт, отключил игрока или разбанил IP.
+  # Пароли туда не попадают никогда.
   audit: true
 
 # ------------------------------------------------------------
-#  Armazenamento
+#  Хранилище
 # ------------------------------------------------------------
 storage:
-  # Banco SQLite dentro de plugins/AuroraLogin/, onde ficam as
-  # contas, as sessoes e os IPs banidos. Para fazer backup, copie
-  # este arquivo com o servidor parado.
+  # База SQLite внутри plugins/AuroraLogin/, где лежат аккаунты,
+  # сессии и забаненные IP. Для резервной копии скопируйте этот
+  # файл на остановленном сервере.
   file: accounts.db
 ```
 

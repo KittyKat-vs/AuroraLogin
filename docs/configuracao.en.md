@@ -10,187 +10,193 @@ A server that was already running with an old configuration is updated on its ow
 
 ## The whole file
 
-One thing this page cannot do for you: the block below is exactly the file the plugin ships, comments included, and those stay in Portuguese for every language, because there is a single config template inside the jar. Everything after the block is in English.
+The block below is the file with its comments translated, so you can read it without switching windows. One catch worth knowing: the file the plugin actually writes in `plugins/AuroraLogin/` keeps these comments in Portuguese, because there is a single template inside the jar — so copy values from here, not the whole block.
 
 ```yaml
 # ============================================================
-#  AuroraLogin - arquivo de configuracao
+#  AuroraLogin - configuration file
 # ============================================================
 #
-#  Tudo que o plugin faz no seu servidor esta aqui. Da para
-#  editar na mao ou abrir o painel no jogo com /auroraauth panel
-#  e ir clicando nas opcoes.
+#  Everything the plugin does on your server is here. You can
+#  edit it by hand or open the in-game panel with /auroraauth
+#  panel and click through the options.
 #
-#  Editou este arquivo? Rode /auroraauth reload. Nao precisa
-#  reiniciar o servidor.
+#  Edited this file? Run /auroraauth reload. No need to restart
+#  the server.
 #
-#  Quando o painel muda uma opcao, o plugin reescreve apenas a
-#  linha daquele valor. Entao os comentarios e a ordem das secoes
-#  continuam aqui depois.
+#  When the panel changes an option, the plugin rewrites only
+#  that value's line. So the comments and the order of the
+#  sections stay put afterwards.
 #
-#  Os comentarios estao sem acento de proposito: assim o arquivo
-#  abre certo em qualquer editor, inclusive os que salvam em
-#  ANSI. O texto das mensagens do jogo, esses sim acentuados,
-#  fica nos arquivos da pasta lang/.
+#  On your server these comments come out in Portuguese and
+#  without accents: there is a single template inside the jar,
+#  and that way the file opens correctly in any editor,
+#  including the ones that save as ANSI. The text the player
+#  sees, which does carry accents, lives in the files under lang/.
 #
-#  Site, suporte e explicacao detalhada de cada opcao:
+#  Site, support and a detailed explanation of each option:
 #  https://auroraplugins.duckdns.org
 # ============================================================
 
-# Versao deste formato. Serve para o plugin perceber, depois de
-# uma atualizacao, que o arquivo antigo precisa ganhar os
-# comentarios novos. Deixe como esta.
+# Version of this format. It lets the plugin notice, after an
+# update, that the old file needs the new comments. Leave it as
+# it is.
 config-version: 1
 
 # ------------------------------------------------------------
-#  Login e conta
+#  Login and account
 # ------------------------------------------------------------
 settings:
-  # Idioma do servidor inteiro: mensagens, painel e ate os nomes
-  # dos comandos de login. Ao trocar para en, /registrar vira
-  # /register e /entrar vira /login. Opcoes: pt_br, en, ru.
+  # Language of the whole server: messages, panel and even the
+  # names of the login commands. Switching to en turns
+  # /registrar into /register and /entrar into /login.
+  # Options: pt_br, en, ru.
   default-language: pt_br
 
-  # Conta original do Minecraft entra sozinha, sem registrar e
-  # sem digitar senha. Desligue se quiser senha para todo mundo,
-  # inclusive para quem tem conta paga.
+  # A paid Minecraft account gets in on its own, without
+  # registering and without typing a password. Turn it off if you
+  # want passwords for everyone, including the people who bought
+  # the game.
   premium-auto-login: true
 
-  # Com isso ligado o plugin confere a conta na Mojang durante o
-  # login, e e isso que faz a entrada automatica funcionar em
-  # servidor com online-mode=false. Normal nem precisar mexer:
-  # com proxy fazendo a checagem, ele se desliga sozinho.
+  # With this on the plugin checks the account with Mojang during
+  # login, and that is what makes automatic entry work on a
+  # server with online-mode=false. You normally never touch it:
+  # when a proxy does the checking, it switches itself off.
   premium-verification: true
 
-  # So tem efeito com o Floodgate instalado. Com ele, o jogador
-  # de celular, console e Windows entra sem senha. Sem Floodgate,
-  # esta opcao fica paradinha e o bedrock registra com senha.
+  # Only has an effect with Floodgate installed. With it, the
+  # player on mobile, console and Windows gets in without a
+  # password. Without Floodgate this option sits still and the
+  # bedrock player registers with a password like anyone else.
   floodgate-auto-login: true
 
-  # Sessao por IP: quem ja logou volta pelo mesmo IP e entra
-  # direto, sem senha de novo. Otimo para o jogador, ruim se o
-  # seu servidor roda em lan house, onde todo mundo divide o
-  # mesmo IP.
+  # Session per IP: someone who already logged in comes back over
+  # the same IP and gets straight in, no password again. Great for
+  # the player, bad if your server runs in a lan house, where
+  # everybody shares the same IP.
   session-enabled: true
 
-  # Quanto tempo a sessao vale, em minutos. Passou, pede a senha
-  # de novo.
+  # How long the session is worth, in minutes. After that, the
+  # password is asked for again.
   session-minutes: 30
 
-  # Tempo, em segundos, que o jogador tem para se autenticar
-  # depois de entrar. Estourou, ele e desconectado.
+  # Time, in seconds, the player has to authenticate after
+  # joining. Once it runs out, they are disconnected.
   timeout-seconds: 60
 
-  # Tamanho da senha, valendo para o registro e para a troca.
+  # Password size, applying to registration and to changing it.
   password-min-length: 6
   password-max-length: 64
 
-  # Nao deixa usar o proprio nome como senha, que e o primeiro
-  # chute de quem tenta entrar na conta alheia.
+  # Does not allow your own name as the password, which is the
+  # first guess of anyone trying to get into another person's
+  # account.
   password-deny-name: true
 
-  # Na troca de senha, nao deixa voltar para a senha que estava
-  # la antes.
+  # When changing the password, does not let you go back to the
+  # one that was there before.
   password-reuse: true
 
-  # O jogador andou antes de logar? Ele volta para o ponto onde
-  # entrou. Desligue se preferir deixar ele parado onde esta.
+  # Did the player walk before logging in? They go back to the
+  # spot where they joined. Turn it off if you prefer leaving them
+  # standing where they are.
   teleport-on-move: true
 
-  # Antes de autenticar, o jogador nao abre inventario, nao
-  # quebra nem coloca bloco, nao usa item nem entidade. E a
-  # protecao para quem entra numa conta alheia e ja sair levando
-  # o baul.
+  # Before authenticating, the player opens no inventory, breaks
+  # or places no block, uses no item and no entity. This is the
+  # protection for someone who gets into another person's account
+  # and immediately walks off with the chest.
   block-interactions: true
 
-  # Efeitos em quem ainda nao se autenticou, para a pessoa
-  # perceber que esta esperando login e nao achar que o servidor
-  # travou. Cada um liga e desliga sozinho.
+  # Effects on anyone who has not authenticated yet, so the person
+  # realises they are waiting on login instead of thinking the
+  # server froze. Each one turns on and off separately.
   pre-login-effects:
-    # Chave geral: desligando isto, nenhum efeito e aplicado.
+    # Master key: with this off, no effect is applied at all.
     enabled: true
-    # Cega o jogador.
+    # Blinds the player.
     blindness: true
-    # Deixa ele andando devagar.
+    # Makes them walk slowly.
     slowness: true
-    # Nivel da lentidao, de 1 a 5.
+    # Slowness level, from 1 to 5.
     slowness-level: 2
-    # Demora mais para quebrar bloco.
+    # Takes longer to break a block.
     mining-fatigue: true
-    # Nivel da fadiga de mineracao, de 1 a 5.
+    # Mining fatigue level, from 1 to 5.
     mining-fatigue-level: 1
 
 # ------------------------------------------------------------
-#  Seguranca
+#  Security
 # ------------------------------------------------------------
 security:
-  # Protecao contra quem fica chutando senha uma por uma. O
-  # bloqueio e por IP e cresce a cada vez que o limite estoura:
-  # primeira vez leva um kick curto, segunda um kick mais longo,
-  # terceira banimento de IP.
+  # Protection against anyone guessing passwords one at a time.
+  # The block is per IP and it grows every time the limit
+  # overflows: first time a short kick, second a longer kick,
+  # third an IP ban.
   brute-force:
-    # Chave geral da protecao.
+    # Master key of the protection.
     enabled: true
-    # Quantas senhas erradas o IP pode mandar, dentro da janela
-    # abaixo, antes de levar o primeiro strike.
+    # How many wrong passwords the IP may send, inside the window
+    # below, before it takes the first strike.
     max-attempts: 5
-    # Janela de contagem, em minutos.
+    # Counting window, in minutes.
     window-minutes: 5
-    # Tempo do kick no primeiro excesso, em minutos.
+    # Kick length on the first excess, in minutes.
     block-minutes: 5
-    # Tempo do kick no segundo excesso, em minutos.
+    # Kick length on the second excess, in minutes.
     second-kick-minutes: 15
-    # Duracao do ban de IP no terceiro excesso, em horas. O ban
-    # cai sozinho nesse prazo, sem ninguem precisar desbanir.
+    # Length of the IP ban on the third excess, in hours. The ban
+    # lifts on its own after that, with nobody needing to unban.
     ban-hours: 24
-    # Passando deste tempo sem nenhum excesso, os strikes do IP
-    # voltam a zero. Em horas (168 = uma semana).
+    # After this long without any excess, the IP's strikes go back
+    # to zero. In hours (168 = one week).
     strike-reset-hours: 168
-    # Desligado, a terceira vez vira apenas mais um kick com o
-    # segundo tempo, em vez de banir o IP.
+    # With it off, the third time becomes just another kick at the
+    # second length instead of banning the IP.
     ip-ban: true
-    # Link do convite do Discord, mostrado na tela de banimento
-    # para o jogador poder recorrer. Deixe vazio ('') para nao
-    # mostrar botao nenhum.
+    # Discord invite link, shown on the ban screen so the player
+    # has somewhere to appeal. Leave it empty ('') to show no
+    # button at all.
     discord-invite: ''
 
 # ------------------------------------------------------------
 #  Interface
 # ------------------------------------------------------------
 visual:
-  # Titulo na tela quando o jogador entra e quando autentica.
+  # Title on screen when the player joins and when they authenticate.
   titles: true
-  # Som nas acoes de registro, login e troca de senha.
+  # Sound on register, login and password change.
   sounds: true
-  # Barra de acao com o tempo que falta para autenticar.
+  # Action bar with the time left to authenticate.
   action-bar: true
-  # De quanto em quanto tempo a barra e atualizada, em ticks
-  # (20 ticks = 1 segundo). 40 significa a cada 2 segundos.
+  # How often the bar is refreshed, in ticks (20 ticks = 1
+  # second). 40 means every 2 seconds.
   action-bar-interval-ticks: 40
 
 # ------------------------------------------------------------
-#  Painel
+#  Panel
 # ------------------------------------------------------------
 panel:
-  # Som de clique ao navegar pelo /auroraauth panel.
+  # Click sound when navigating /auroraauth panel.
   sounds: true
 
 # ------------------------------------------------------------
-#  Administracao
+#  Administration
 # ------------------------------------------------------------
 admin:
-  # Grava em audit.log o que a administracao fez: quem redefiniu
-  # senha, removeu conta, desconectou ou desbanou um IP. Senha
-  # nunca aparece ali.
+  # Writes to audit.log what the administration did: who reset a
+  # password, removed an account, disconnected a player or unbanned
+  # an IP. A password never appears there.
   audit: true
 
 # ------------------------------------------------------------
-#  Armazenamento
+#  Storage
 # ------------------------------------------------------------
 storage:
-  # Banco SQLite dentro de plugins/AuroraLogin/, onde ficam as
-  # contas, as sessoes e os IPs banidos. Para fazer backup, copie
-  # este arquivo com o servidor parado.
+  # SQLite database inside plugins/AuroraLogin/, holding the
+  # accounts, the sessions and the banned IPs. For a backup, copy
+  # this file with the server stopped.
   file: accounts.db
 ```
 
