@@ -54,10 +54,18 @@ settings:
   # inclusive para quem tem conta paga.
   premium-auto-login: true
 
-  # Com isso ligado o plugin confere a conta na Mojang durante o
-  # login, e e isso que faz a entrada automatica funcionar em
-  # servidor com online-mode=false. Normal nem precisar mexer:
-  # com proxy fazendo a checagem, ele se desliga sozinho.
+  # Antes de desafiar o cliente, o plugin pergunta a Mojang se o
+  # nome e de uma conta paga. Nome que ninguem comprou nao recebe
+  # desafio: o jogador cai no fluxo de senha ja na primeira
+  # entrada, sem aviso do launcher. Nome de conta paga recebe, e e
+  # isso que faz o dono entrar sozinho. Quem entra com nome de
+  # conta paga sem ter a conta ve o aviso uma unica vez; na
+  # conexao seguinte o plugin reconhece nome e IP, nao desafia de
+  # novo e a pessoa registra normal. Esse registro sai com
+  # /auroraauth premium reset <nome ou ip>. Se a Mojang estiver
+  # indisponivel, ninguem e desafiado naquele momento e o login
+  # segue pelo fluxo de senha sem travar. Com proxy fazendo a
+  # checagem, ele se desliga sozinho.
   premium-verification: true
 
   # So tem efeito com o Floodgate instalado. Com ele, o jogador
@@ -187,8 +195,9 @@ admin:
 # ------------------------------------------------------------
 storage:
   # Banco SQLite dentro de plugins/AuroraLogin/, onde ficam as
-  # contas, as sessoes e os IPs banidos. Para fazer backup, copie
-  # este arquivo com o servidor parado.
+  # contas, as sessoes, os IPs banidos e o registro dos clientes
+  # sem sessao Mojang. Para fazer backup, copie este arquivo com o
+  # servidor parado.
   file: accounts.db
 ```
 
@@ -196,7 +205,9 @@ storage:
 
 `default-language` escolhe o idioma do servidor inteiro: mensagens, painel e também os nomes dos comandos de autenticação. Ao trocar para inglês, `/registrar` vira `/register` e `/entrar` vira `/login`; os nomes antigos deixam de existir na hora.
 
-`premium-auto-login` é a entrada automática de conta original do Minecraft. O jogador chega, o plugin confere a conta e abre a porta sem pedir registro nem senha. `premium-verification` é a checagem em si, a que faz isso funcionar em servidor com `online-mode=false`; se você usa Velocity ou BungeeCord fazendo essa verificação, o plugin percebe e se desliga sozinho, mas dá para desligar por aí também. `floodgate-auto-login` é a mesma ideia para quem entra pelo Bedrock, e só vale quando o Floodgate está instalado.
+`premium-auto-login` é a entrada automática de conta original do Minecraft. O jogador chega, o plugin confere a conta e abre a porta sem pedir registro nem senha. `premium-verification` é a checagem em si, a que faz isso funcionar em servidor com `online-mode=false`: antes de desafiar o cliente ela pergunta a Mojang se o nome é de conta paga, e nome que ninguém comprou nem recebe o desafio — cai direto no fluxo de senha, já na primeira entrada. Se você usa Velocity ou BungeeCord fazendo essa verificação, o plugin percebe e se desliga sozinho, mas dá para desligar por aí também. `floodgate-auto-login` é a mesma ideia para quem entra pelo Bedrock, e só vale quando o Floodgate está instalado.
+
+Sobra um caso: nome de conta paga usado por quem não tem a conta. O launcher dessa pessoa desiste no pedido de criptografia, com o aviso de *Invalid session*, e isso acontece uma vez só. O plugin registra o cliente que caiu no handshake — nome e IP — e para de desafiar ele: a conexão seguinte vai direto para o registro ou a senha, sem passar pela Mojang. `/auroraauth premium` mostra o que está registrado, `/auroraauth premium reset <nome|ip>` limpa, e depois do reset o cliente volta a ser desafiado. Cliente que responde ao pedido de criptografia nunca entra nesse registro, e cliente com nome que ninguém comprou também não, porque nunca foi desafiado. Se a Mojang não responder, ninguém é desafiado naquele momento: o plugin espera alguns segundos, avisa uma vez no console e o login segue normal, sem travar. `/auroraauth reload` limpa as respostas que ficaram em cache.
 
 `session-enabled` com `session-minutes` deixa o jogador voltar pelo mesmo IP sem digitar a senha de novo até a sessão expirar. `timeout-seconds` é quanto tempo ele tem para se autenticar depois de entrar antes de ser desconectado.
 
@@ -208,7 +219,7 @@ Os quatro campos de senha (`password-min-length`, `password-max-length`, `passwo
 
 A proteção contra força bruta funciona por IP e é progressiva. `max-attempts` é quantas senhas erradas cabem dentro de `window-minutes`; estourou, o IP leva o primeiro strike e é expulso por `block-minutes`. O segundo strike expulsa por `second-kick-minutes`. O terceiro aplica o ban de IP por `ban-hours`, desde que `ip-ban` esteja ligado; desligado, a terceira vez é só mais um kick com o segundo tempo. `strike-reset-hours` é quanto tempo o IP precisa ficar sem passar do limite para os strikes voltarem a zero.
 
-O ban expira sozinho no prazo de `ban-hours`, e ele não apaga conta nem senha: a pessoa volta a poder jogar quando o tempo passar ou quando você desbanir. Para desbanir antes, o caminho é **Segurança → IPs banidos** no painel, onde aparece a lista com strikes, data do ban, expiração, tempo restante e o motivo de cada IP.
+O ban expira sozinho no prazo de `ban-hours`, e ele não apaga conta nem senha: a pessoa volta a poder jogar quando o tempo passar ou quando você liberar o IP. O caminho é **Segurança → IPs e strikes** no painel, onde aparece todo IP do banco — bloqueado, banido, expirado ou já livre — com strike, status e data do último excesso, do mais recente para o mais antigo. A busca aceita parte do IP, o botão de atualizar recarrega sem fechar o menu, e cada IP abre uma tela com duas ações: **Remover bloqueio** libera o tempo na hora e mantém as strikes, **Apagar registro** tira o IP do banco e zera as strikes. Ban que já venceu continua na lista marcado como expirado; ele some sozinho quando o IP fica `strike-reset-hours` sem passar do limite.
 
 `discord-invite` recebe o link do seu Discord. Ele é mostrado na tela de banimento, junto com o IP e o tempo restante, para o jogador ter por onde recorrer. Deixe `''` para não mostrar botão nenhum.
 
@@ -216,11 +227,11 @@ O ban expira sozinho no prazo de `ban-hours`, e ele não apaga conta nem senha: 
 
 `visual.titles`, `visual.sounds` e `visual.action-bar` controlam o que aparece na tela: o título ao entrar e ao autenticar, os sons das ações de login e a barra de ação com o tempo que falta. `action-bar-interval-ticks` é a frequência dessa barra, em ticks, sendo 20 ticks um segundo.
 
-`panel.sounds` liga ou desliga o clique ao navegar pelo painel. `admin.audit` grava em `plugins/AuroraLogin/audit.log` as ações da administração: quem redefiniu senha, removeu conta, desconectou jogador ou desbanou um IP. Senha nunca é escrita ali.
+`panel.sounds` liga ou desliga o clique ao navegar pelo painel. `admin.audit` grava em `plugins/AuroraLogin/audit.log` as ações da administração: quem redefiniu senha, removeu conta, desconectou jogador, liberou um IP ou apagou o registro dele. Senha nunca é escrita ali.
 
 ## Armazenamento
 
-`storage.file` é o banco SQLite dentro de `plugins/AuroraLogin/`, onde ficam as contas, as sessões e os IPs banidos. Para backup, basta copiar esse arquivo com o servidor parado.
+`storage.file` é o banco SQLite dentro de `plugins/AuroraLogin/`, onde ficam as contas, as sessões e os IPs com strike. Para backup, basta copiar esse arquivo com o servidor parado.
 
 ## Arquivos de idioma
 

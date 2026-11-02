@@ -59,10 +59,19 @@ settings:
   # the game.
   premium-auto-login: true
 
-  # With this on the plugin checks the account with Mojang during
-  # login, and that is what makes automatic entry work on a
-  # server with online-mode=false. You normally never touch it:
-  # when a proxy does the checking, it switches itself off.
+  # Before challenging a client, the plugin asks Mojang whether
+  # that name belongs to a paid account. A name nobody bought gets
+  # no challenge at all: the player lands in the password flow on
+  # the very first join, with no launcher warning. A paid name does
+  # get challenged, and that is what lets the real owner walk in on
+  # their own. Someone using a paid name without owning the account
+  # sees the warning exactly once; on the next connection the
+  # plugin knows the name and the IP, stops challenging, and the
+  # player registers normally. That record clears with
+  # /auroraauth premium reset <name or ip>. If Mojang is
+  # unavailable, nobody is challenged at that moment and the login
+  # goes through the password flow without stalling. With a proxy
+  # doing the checking, this switches itself off.
   premium-verification: true
 
   # Only has an effect with Floodgate installed. With it, the
@@ -195,8 +204,9 @@ admin:
 # ------------------------------------------------------------
 storage:
   # SQLite database inside plugins/AuroraLogin/, holding the
-  # accounts, the sessions and the banned IPs. For a backup, copy
-  # this file with the server stopped.
+  # accounts, the sessions, the banned IPs and the record of
+  # clients with no Mojang session. For a backup, copy this file
+  # with the server stopped.
   file: accounts.db
 ```
 
@@ -204,7 +214,9 @@ storage:
 
 `default-language` picks the language of the whole server: messages, panel and even the names of the authentication commands. Switching to English turns `/registrar` into `/register` and `/entrar` into `/login`; the old names stop existing immediately.
 
-`premium-auto-login` is the automatic entry for paid Minecraft accounts. The player arrives, the plugin checks the account and opens the door without asking for a registration or a password. `premium-verification` is the check itself, the thing that makes that work on a server with `online-mode=false`; if you run Velocity or BungeeCord doing that verification, the plugin notices and switches itself off, though you can turn it off by hand too. `floodgate-auto-login` is the same idea for anyone joining over Bedrock, and it only counts when Floodgate is installed.
+`premium-auto-login` is the automatic entry for paid Minecraft accounts. The player arrives, the plugin checks the account and opens the door without asking for a registration or a password. `premium-verification` is the check itself, the thing that makes that work on a server with `online-mode=false`: before it challenges a client it asks Mojang whether that name belongs to a paid account, and a name nobody bought never gets the challenge at all — it goes straight into the password flow, on the first join. If you run Velocity or BungeeCord doing that verification, the plugin notices and switches itself off, though you can turn it off by hand too. `floodgate-auto-login` is the same idea for anyone joining over Bedrock, and it only counts when Floodgate is installed.
+
+One case is left over: a paid name used by somebody who doesn't own the account. Their launcher gives up at the encryption request with the *Invalid session* message, and that happens exactly once. The plugin records the client that died in the handshake — name and IP — and stops challenging it: the next connection goes straight to registration or login without touching Mojang. `/auroraauth premium` shows what is recorded, `/auroraauth premium reset <name|ip>` clears it, and after a reset that client is challenged again. A client that answers the encryption request never ends up in that record, and neither does a client whose name nobody bought, because it was never challenged. If Mojang doesn't answer, nobody is challenged at that moment: the plugin waits a few seconds, warns once in the console, and the login carries on normally without stalling. `/auroraauth reload` clears the answers that stayed in cache.
 
 `session-enabled` together with `session-minutes` lets a player come back over the same IP without retyping the password until the session expires. `timeout-seconds` is how long they have to authenticate after joining before they get disconnected.
 
@@ -216,7 +228,7 @@ The four password fields (`password-min-length`, `password-max-length`, `passwor
 
 The brute-force protection works per IP and escalates. `max-attempts` is how many wrong passwords fit inside `window-minutes`; once it overflows, the IP takes its first strike and is kicked for `block-minutes`. The second strike kicks for `second-kick-minutes`. The third applies the IP ban for `ban-hours`, as long as `ip-ban` is on; with it off, the third time is just another kick at the second duration. `strike-reset-hours` is how long an IP has to stay under the limit for its strikes to return to zero.
 
-The ban expires on its own after `ban-hours`, and it deletes neither accounts nor passwords: the person can play again when the time passes or when you unban them. To unban early, the path is **Security → Banned IPs** in the panel, where the list shows strikes, ban date, expiry, time left and the reason for each IP.
+The ban expires on its own after `ban-hours`, and it deletes neither accounts nor passwords: the person can play again when the time passes or when you free the IP. The path is **Security → IPs and strikes** in the panel, which lists every IP in the database — blocked, banned, expired or already free — with its strikes, status and the date of the last excess, newest first. The search takes part of an IP, the refresh button reloads without closing the menu, and each IP opens a screen with two actions: **Clear block** frees the time right away and keeps the strikes, **Delete record** removes the IP from the database and zeroes the strikes. A ban whose time has run out stays in the list marked as expired; it disappears on its own once the IP goes `strike-reset-hours` without another excess.
 
 `discord-invite` takes the link to your Discord. It is shown on the ban screen, next to the IP and the time left, so the player has somewhere to go. Leave it `''` to show no button at all.
 
@@ -224,11 +236,11 @@ The ban expires on its own after `ban-hours`, and it deletes neither accounts no
 
 `visual.titles`, `visual.sounds` and `visual.action-bar` control what appears on screen: the title on join and on authenticating, the sounds for the login actions, and the action bar with the time remaining. `action-bar-interval-ticks` is how often that bar is refreshed, in ticks, 20 ticks being one second.
 
-`panel.sounds` turns the click on or off when navigating the panel. `admin.audit` writes the administration's actions to `plugins/AuroraLogin/audit.log`: who reset a password, removed an account, disconnected a player or unbanned an IP. A password is never written there.
+`panel.sounds` turns the click on or off when navigating the panel. `admin.audit` writes the administration's actions to `plugins/AuroraLogin/audit.log`: who reset a password, removed an account, disconnected a player, freed an IP or deleted its record. A password is never written there.
 
 ## Storage
 
-`storage.file` is the SQLite database inside `plugins/AuroraLogin/`, holding the accounts, the sessions and the banned IPs. For a backup, copy that file with the server stopped.
+`storage.file` is the SQLite database inside `plugins/AuroraLogin/`, holding the accounts, the sessions and the IPs with strikes. For a backup, copy that file with the server stopped.
 
 ## Language files
 
